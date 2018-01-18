@@ -5,6 +5,7 @@ import com.example.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by wjx on 15/7/5.
@@ -13,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     @RequestMapping("/user")
-    public String getUser(Model model) {
+    public @ResponseBody String getUser(Model model) {
         UserService userService = new UserService();
         User user = userService.getUser();
 
         model.addAttribute("user", user);
-        return "user";
+        System.out.println("------------------------------------请求收到------------------");
+        return user.getName();
     }
 }

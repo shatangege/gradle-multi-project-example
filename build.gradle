@@ -16,6 +16,7 @@ allprojects {
     }
 }
 
+
 subprojects { subproj ->
 
     apply plugin: 'java'
@@ -27,7 +28,7 @@ subprojects { subproj ->
     apply plugin: 'maven'
 
     // 由于根下屏蔽了 java 插件，所以把这些方法定义转移到各个子项目下读取
-    apply from: "https://gist.githubusercontent.com/someok/43d4ea94ea9db7e760a3108aae870913/raw/0d9a6f2e95815646e202e0244f58a34b89d00f98/utils.gradle"
+//    apply from: "https://gist.githubusercontent.com/someok/43d4ea94ea9db7e760a3108aae870913/raw/0d9a6f2e95815646e202e0244f58a34b89d00f98/utils.gradle"
 
 
     group = project_group
@@ -38,30 +39,16 @@ subprojects { subproj ->
 
     jar {
         excludes = ['**/rebel.xml', '**/.keep']
-
-        doFirst {
-            // 生成jar 包的时候按此规则生成 manifest 文件
-            manifest = defaultManifest([
-                    project: subproj,
-                    projectVendor: project_vendor
-            ])
-        }
     }
 
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
         from 'build/docs/javadoc'
-        doFirst {
-            manifest = defaultManifest({ subproj })
-        }
     }
 
     task sourcesJar(type: Jar) {
         classifier = 'sources'
         from sourceSets.main.allSource
-        doFirst {
-            manifest = defaultManifest({ subproj })
-        }
     }
 
     // 编码改为 UTF-8, 否则编译源码的时候会出错
@@ -113,10 +100,7 @@ subprojects { subproj ->
         // 测试依赖
         //
         testCompile(
-                libraries.'junit',
-                libraries.'spring-test',
-                libraries.'assertj',
-                libraries.'mockito-core',
+                libraries.'spring-boot-test'
         )
     }
 
